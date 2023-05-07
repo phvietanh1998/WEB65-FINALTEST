@@ -1,11 +1,10 @@
 import jwt from "jsonwebtoken";
 import { users } from "../db.js";
 
-const JWT_SECRET = "MY_SECRET_KEY";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 const loginMiddleware = async (req, res, next) => {
   const { username, password } = req.body;
-  console.log(username + " " + password);
   const loginUser = await users.findOne({ username, password });
 
   if (loginUser != undefined) {
@@ -17,7 +16,7 @@ const loginMiddleware = async (req, res, next) => {
       },
       JWT_SECRET,
       {
-        expiresIn: "30s",
+        expiresIn: "1h",
       }
     );
     req.data = { username, token };

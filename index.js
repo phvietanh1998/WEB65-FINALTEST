@@ -1,15 +1,14 @@
+import { config } from "dotenv";
+config();
 import express from "express";
-import { MongoClient } from "mongodb";
 import inventoryRoutes from "../node_review/routes/inventoryRoutes.js";
 import orderRoutes from "../node_review/routes/orderRoutes.js";
 import loginRouter from "./routes/login.js";
+import { client } from "./db.js";
 
 const app = express();
 
-const MONGO_URL =
-  "mongodb+srv://phvietanh1998:BogFTtwQkMfFCRCp@cluster0.5ku8xv9.mongodb.net/test";
-const PORT = 5050;
-const client = new MongoClient(MONGO_URL);
+const PORT = process.env.PORT;
 
 async function main() {
   try {
@@ -18,6 +17,7 @@ async function main() {
     console.log("Connected to Mongo successfully");
 
     app.use(express.json());
+
     app.use("/inventory", inventoryRoutes);
     app.use("/login", loginRouter);
     app.use("/order", orderRoutes);
